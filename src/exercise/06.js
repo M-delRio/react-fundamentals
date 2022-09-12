@@ -4,28 +4,60 @@
 import * as React from 'react'
 
 function UsernameForm({onSubmitUsername}) {
-  // 🐨 add a submit event handler here (`handleSubmit`).
-  // 💰 Make sure to accept the `event` as an argument and call
-  // `event.preventDefault()` to prevent the default behavior of form submit
-  // events (which refreshes the page).
-  // 📜 https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault
-  //
-  // 🐨 get the value from the username input (using whichever method
-  // you prefer from the options mentioned in the instructions)
-  // 💰 For example: event.target.elements[0].value
-  // 🐨 Call `onSubmitUsername` with the value of the input
-
-  // 🐨 add the onSubmit handler to the <form> below
-
   // 🐨 make sure to associate the label to the input.
   // to do so, set the value of 'htmlFor' prop of the label to the id of input
+
+  // bonus #1: useRef
+  const inputEl = React.useRef(null)
+
+  // bonus #2: errState, bool if invalid uppercase used
+  // const [isErrorState, setIsErrorState] = React.useState(false)
+
+  // bonus #3: controlled input component, parse uppercase to lowercase
+  const [userName, setUsername] = React.useState("")
+
+  // React.useEffect(() => {
+  //   console.log(`effect check: ${isErrorState}`);
+  // })
+
+  const handleSubmit = (eventArg) => {
+    eventArg.preventDefault()
+    // const name = eventArg.target.elements.nameInput.value
+    // onSubmitUsername(name)
+    onSubmitUsername(inputEl.current.value)
+  }
+
+  const handleChange = (eventArg) => {
+    // pointer input element
+    // const inputChars = inputEl.current.value
+    // dynamic fetch value from event arg
+    // const inputChars = eventArg.target.value
+    // alternative deconstruct
+    // const {value} = eventArg.target
+
+    // bonus #2: validate only lower case
+    // if (inputChars.toLowerCase() !== inputChars) {
+    //   setIsErrorState(true)
+    // } else {
+    //   setIsErrorState(false)
+    // }
+
+    // bonus #3: coerce input to lowercase
+    setUsername(userName.toLowerCase())
+  }
+
+
   return (
-    <form>
+    <form onSubmit={handleSubmit} >
       <div>
-        <label>Username:</label>
-        <input type="text" />
+        <label htmlFor='nameInput'>Username:</label>
+        <input value={userName} id='nameInput' type="text" ref={inputEl} onChange={handleChange}/>
       </div>
-      <button type="submit">Submit</button>
+      {/* <button type="submit" disabled={isErrorState}>Submit</button>
+      {isErrorState &&
+        <div>Username must be lower case</div>
+      } */}
+      <button value={userName} type="submit">Submit</button>
     </form>
   )
 }
